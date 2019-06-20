@@ -9,6 +9,10 @@ class Config extends Properties{
     this.getProperty(name)
   }
 
+  def setString(name: String, value: String): Unit = {
+    this.setProperty(name, value)
+  }
+
   def getStringSequence(name: String, delimiter: String = " "): Seq[String] = {
     this.getProperty(name).split(" ")
   }

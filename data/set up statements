@@ -1,0 +1,48 @@
+CREATE SCHEMA sensors;
+
+CREATE TABLE sensors.weather(
+    date_time DATETIME
+  , city VARCHAR(100)
+  , currently_apparenttemperature DECIMAL(4,2)
+  , currently_humidity DECIMAL(3,2)
+  , currently_precipintensity DECIMAL(5,4)
+  , currently_precipprobability DECIMAL(3,2)
+  , currently_preciptype VARCHAR(100)
+  , currently_temperature DECIMAL(4,2)
+  , currently_visibility DECIMAL(4,2)
+  , currently_windspeed DECIMAL(4,2)
+)
+
+DISTKEY(city)
+SORTKEY(date_time);
+
+
+CREATE TABLE sensors.track_events(
+    original_timestamp_time TIMESTAMP
+  , event_name VARCHAR(100)
+  , context_timezone VARCHAR(100)
+  , context_os_version VARCHAR(10)
+  , context_os_name VARCHAR(100)
+  , context_device_type VARCHAR(100)
+  , context_device_model VARCHAR(100)
+  , context_device_manufacturer VARCHAR(100)
+  , context_device_id VARCHAR(36)
+  , context_app_version VARCHAR(10)
+  , context_app_name VARCHAR(10)
+  , context_app_build VARCHAR(10
+  , anonymous_id VARCHAR(36)
+  , received_time TIMESTAMP
+  , sent_time TIMESTAMP
+  , properties_rating VARCHAR(10)
+)
+
+DISTKEY(event_name)
+SORTKEY(original_timestamp_time);
+
+
+// for testing
+
+COPY sensors.weather
+FROM 's3://my-tier-bucket/weather.json'
+IAM_ROLE 'arn:aws:iam::<put your account id here>:role/myRedshiftRole'
+FORMAT AS JSON 'auto';
